@@ -25,6 +25,7 @@ class TextViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         super.viewDidLoad()
         button.layer.cornerRadius = 15
         fetchData()
+        self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
     }
     
