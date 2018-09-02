@@ -7,3 +7,95 @@
 //
 
 import Foundation
+import CoreData
+import UIKit
+
+class HistoryViewModel {
+    
+    var coreDataObject = [HistoryModel]()
+    
+    init() {
+        fetchData()
+    }
+    
+    func saveToCD(name: HistoryModel) {
+        
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        // 1
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        // 2
+        let entity =
+            NSEntityDescription.entity(forEntityName: "History",
+                                       in: managedContext)!
+        
+        let person = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        
+        // 3
+        person.setValue(name.currentText, forKeyPath: "currentText")
+        person.setValue(name.currentLanguage, forKeyPath: "currentLanguage")
+        person.setValue(name.translatedText, forKeyPath: "translatedText")
+        person.setValue(name.translatedLanguage, forKeyPath: "translatedLanguage")
+        
+        // 4
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
+    
+    func fetchData() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "History")
+        var names = [NSManagedObject]()
+        do {
+            names = try managedContext.fetch(fetchRequest)
+            create(data: names)
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
+    
+    private func create(data: [NSManagedObject]) {
+        coreDataObject = []
+        for item in data {
+            coreDataObject.append(HistoryModel(currentText: item.value(forKeyPath: "currentText") as! String,
+                                       currentLanguage: item.value(forKeyPath: "currentLanguage") as! String,
+                                       translatedText: item.value(forKeyPath: "translatedText") as! String,
+                                       translatedLanguage: item.value(forKeyPath: "translatedLanguage") as! String))
+        }
+    }
+    
+    func clearEntity() {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "History")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+            self.coreDataObject = []
+        } catch {
+            print ("There was an error")
+        }
+    }
+    
+    
+    
+    
+}

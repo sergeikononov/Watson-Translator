@@ -68,6 +68,9 @@ class NetworkManager {
         
         Alamofire.request(url + "v2/translate", method: .get, parameters: parameters, headers: headers)
             .responseString { (value) in
+                if value.value!.first == "{" {
+                    return
+                }
                 success(value.value)
             }
             .responseJSON { (response) in

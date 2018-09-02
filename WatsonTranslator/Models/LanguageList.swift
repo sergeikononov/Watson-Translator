@@ -7,3 +7,21 @@
 //
 
 import Foundation
+import SwiftyJSON
+
+struct LanguageList{
+    let language: String
+    let name: String
+    
+    static func fromJSON(json: [JSON]) -> [LanguageList]? {
+        
+        return json.compactMap{ jsonItem -> LanguageList in
+            let language = jsonItem["language"].string
+            let name = jsonItem["name"].string
+            
+            return LanguageList(language: language!,
+                                name: name!)
+        }
+    }
+}
+

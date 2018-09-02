@@ -7,3 +7,15 @@
 //
 
 import Foundation
+
+class ListViewModel {
+    var languages: String
+    var key: String
+    
+    
+    init(list: LanguageList) {
+        self.languages = list.name
+        self.key = list.language
+    }
+    
+}

@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+struct HistoryModel {
+    var currentText: String
+    var currentLanguage: String
+    var translatedText: String
+    var translatedLanguage: String
+}

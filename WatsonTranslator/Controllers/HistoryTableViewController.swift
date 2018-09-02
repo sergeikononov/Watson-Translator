@@ -7,45 +7,47 @@
 //
 
 import UIKit
+import CoreData
 
 class HistoryTableViewController: UITableViewController {
+    
+    var check = HistoryViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        check.fetchData()
+        tableView.reloadData()
     }
-
-    // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return check.coreDataObject.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! HistoryTableViewCell
+        
+        cell.setup(model: check.coreDataObject[indexPath.row])
         return cell
     }
-    */
+    
+    @IBAction func clearButton(_ sender: UIBarButtonItem) {
+        check.clearEntity()
+        tableView.reloadData()
+    }
+    
+    
 
     /*
     // Override to support conditional editing of the table view.
