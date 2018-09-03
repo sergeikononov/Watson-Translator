@@ -34,14 +34,14 @@ class HistoryViewModel {
             NSEntityDescription.entity(forEntityName: "History",
                                        in: managedContext)!
         
-        let person = NSManagedObject(entity: entity,
+        let data = NSManagedObject(entity: entity,
                                      insertInto: managedContext)
         
         // 3
-        person.setValue(name.currentText, forKeyPath: "currentText")
-        person.setValue(name.currentLanguage, forKeyPath: "currentLanguage")
-        person.setValue(name.translatedText, forKeyPath: "translatedText")
-        person.setValue(name.translatedLanguage, forKeyPath: "translatedLanguage")
+        data.setValue(name.currentText, forKeyPath: "currentText")
+        data.setValue(name.currentLanguage, forKeyPath: "currentLanguage")
+        data.setValue(name.translatedText, forKeyPath: "translatedText")
+        data.setValue(name.translatedLanguage, forKeyPath: "translatedLanguage")
         
         // 4
         do {
@@ -59,10 +59,10 @@ class HistoryViewModel {
         
         let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "History")
-        var names = [NSManagedObject]()
+        var data = [NSManagedObject]()
         do {
-            names = try managedContext.fetch(fetchRequest)
-            create(data: names)
+            data = try managedContext.fetch(fetchRequest)
+            create(data: data)
             
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
