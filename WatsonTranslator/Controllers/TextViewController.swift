@@ -23,6 +23,7 @@ class TextViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        button.isHidden = true
         button.layer.cornerRadius = 15
         fetchData()
         self.hideKeyboardWhenTappedAround()
@@ -48,6 +49,7 @@ class TextViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         NetworkManager.shared.getLanguageList(success: { (value) in
             self.languages = value?.map({ return ListViewModel(list: $0)}) ?? []
             self.languagePickerView.reloadAllComponents()
+            self.button.isHidden = false
         }) { (err) in
             showAlertWithOk(self, title: "Error", message: err)
         }
