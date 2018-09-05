@@ -1,6 +1,0 @@
-framework module Pods_WatsonTranslator {
-  umbrella header "Pods-WatsonTranslator-umbrella.h"
-
-  export *
-  module * { export * }
-}
